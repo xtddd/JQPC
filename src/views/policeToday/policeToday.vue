@@ -107,6 +107,7 @@
           </div>
           <div class="contents">
             <dispatch-power v-if="item === '力量派遣'" :list="PX"></dispatch-power>
+            <police-details v-if="item === '详情总览'"></police-details>
           </div>
         </div>
       </div>
@@ -120,6 +121,7 @@
  *        ----张磊 2020.04.14
  */
 import dispatchPower from "./componts/dispatchPower";
+import policeDetails from "./componts/policeDetails";
 import ZHLB from "./componts/ZHLB";
 import SJC from "./componts/SJC";
 import "../../scss/iconfont";
@@ -129,7 +131,8 @@ export default {
   components: {
     dispatchPower,
     ZHLB,
-    SJC
+    SJC,
+    policeDetails
   },
   data() {
     return {

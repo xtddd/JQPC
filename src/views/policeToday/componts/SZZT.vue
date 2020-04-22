@@ -6,7 +6,16 @@
     </div>
     <div style="display:flex">
       <div class="SL" style="padding: 10px 30px 10px 50px;">
-        <div id="SLChart" :style="{width: '146px', height: '146px'}"></div>
+        <div id="SLChart" :style="{width: '126px', height: '146px'}">
+          <el-progress type="circle" :percentage="70" color="#21BEFF"></el-progress>
+          <div class="JDTNR">
+            <div class="NR">
+              <span>可用载水量</span>
+              <span>5000KG</span>
+              <span>2000KG</span>
+            </div>
+          </div>
+        </div>
         <div class="xx">
           <span>
             消防泵实施压力：
@@ -23,7 +32,16 @@
         </div>
       </div>
       <div class="SL" style="padding: 10px 50px 10px 30px;">
-        <div id="PMChart" :style="{width: '146px', height: '146px'}"></div>
+        <div id="PMChart" :style="{width: '126px', height: '146px'}">
+          <el-progress type="circle" :percentage="70"></el-progress>
+          <div class="JDTNR">
+            <div class="NR">
+              <span>可用载水量</span>
+              <span>5000KG</span>
+              <span>2000KG</span>
+            </div>
+          </div>
+        </div>
         <div class="xx">
           <span>
             消防泵实施压力：
@@ -66,8 +84,8 @@ export default {
   created() {},
   mounted() {
     this.$nextTick(() => {
-      this.drawLine("SLChart");
-      this.drawLine("PMChart");
+      // this.drawLine("SLChart");
+      // this.drawLine("PMChart");
     });
   },
   methods: {
@@ -203,10 +221,27 @@ export default {
 <style lang="scss">
 .SZZT {
   width: 100%;
+  .JDTNR {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: -100%;
+    display: flex;
+    // flex-wrap: wrap;
+    align-items: center;
+    span {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+    }
+  }
   .SL {
     display: flex;
     // justify-content: space-between;
     flex: 1;
+    .el-progress__text {
+      color: transparent;
+    }
     .xx {
       // display: flex;
       // justify-content: space-between;
