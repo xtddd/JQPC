@@ -108,6 +108,8 @@
           <div class="contents">
             <dispatch-power v-if="item === '力量派遣'" :list="PX"></dispatch-power>
             <police-details v-if="item === '详情总览'"></police-details>
+            <CJCS v-if="item === '处置措施'" :flag="token"></CJCS>
+            <ZZZH v-if="item === '组织指挥'"></ZZZH>
           </div>
         </div>
       </div>
@@ -124,6 +126,8 @@ import dispatchPower from "./componts/dispatchPower";
 import policeDetails from "./componts/policeDetails";
 import ZHLB from "./componts/ZHLB";
 import SJC from "./componts/SJC";
+import CJCS from "./componts/CJCS";
+import ZZZH from "./componts/ZZZH";
 import "../../scss/iconfont";
 import * as api from "../../api/api";
 export default {
@@ -132,7 +136,9 @@ export default {
     dispatchPower,
     ZHLB,
     SJC,
-    policeDetails
+    policeDetails,
+    CJCS,
+    ZZZH
   },
   data() {
     return {
@@ -146,7 +152,7 @@ export default {
         "组织指挥",
         "联战联勤",
         "信息报送",
-        "预知预警"
+        // "预知预警"
       ],
       flag: 1,
       active: 1,
@@ -163,6 +169,7 @@ export default {
         backgroundSize: "100% 100%"
       },
       bgc: {},
+      token:'',
       PX: null //派遣力量
     };
   },
@@ -177,6 +184,7 @@ export default {
     //初始化
     init() {
       this.getList();
+      this.getToken()
       console.log("policeToday.init...");
     },
     //获取列表数据
@@ -190,6 +198,12 @@ export default {
           this.list = res.data.data;
           console.log(this.list);
         });
+    },
+    //获取token
+    getToken(){
+      return api.InitLogin().then(res => {
+        this.token=res.data.data;
+      });
     },
     SelectionItem(item, index) {
       this.flag = index;
