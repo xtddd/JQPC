@@ -83,7 +83,11 @@
             <template v-for="(item,index) in list">
               <ZHLB :data="item" :key="index+'zh'" :func="handlerDouble"></ZHLB>
             </template>
+<<<<<<< Updated upstream
             <!-- <ZHLB :func="handlerDouble"></ZHLB> -->
+=======
+<!--            <ZHLB :func="handlerDouble"></ZHLB>-->
+>>>>>>> Stashed changes
           </div>
         </div>
       </div>
@@ -108,7 +112,7 @@
           <div class="contents">
             <dispatch-power v-if="item === '力量派遣'" :list="PX" :carList="carList"></dispatch-power>
             <police-details v-if="item === '详情总览'"></police-details>
-            <CJCS v-if="item === '处置措施'" :flag="token"></CJCS>
+            <CJCS v-if="item === '处置措施'" :flag="token" :ajbh="ajbh"></CJCS>
             <ZZZH v-if="item === '组织指挥'"></ZZZH>
           </div>
         </div>
@@ -169,9 +173,15 @@ export default {
         backgroundSize: "100% 100%"
       },
       bgc: {},
+<<<<<<< Updated upstream
       token: "",
       PX: [], //派遣力量
       carList: []
+=======
+      token:'',
+      ajbh:'',
+      PX: null //派遣力量
+>>>>>>> Stashed changes
     };
   },
   computed: {},
@@ -223,6 +233,11 @@ export default {
     },
     //双击事件
     handlerDouble(data) {
+<<<<<<< Updated upstream
+=======
+      console.log(data);
+      this.ajbh=data.ajbh;
+>>>>>>> Stashed changes
       //派遣力量
       this.PX = data.dispatchDataList;
       // this.getCar();

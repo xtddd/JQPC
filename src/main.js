@@ -17,8 +17,12 @@ function getServerConfig() {
       console.log(result)  // 看打印出来的结果
       let config = result.data;
       // for (let key in result) {
+<<<<<<< Updated upstream
         Vue.prototype.baseURL = config.baseURL;
         // axios.defaults.baseURL = config.baseURL;
+=======
+        axios.defaults.baseURL = config.baseURL;
+>>>>>>> Stashed changes
       // }
       // console.log(axios.defaults.baseURL,'axios.defaults.baseURL00000')  // 验证是否已经把属性挂在了Vue上
       console.log(Vue.prototype.baseURL,'Vue.prototype.baseURL00000')
