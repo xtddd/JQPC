@@ -243,7 +243,11 @@
         </div>
         <div class="Singular">
           <div class="value">
-            <el-button size="mini" style="background: linear-gradient(#2575ec, #2250ba);">补发报警短信</el-button>
+            <el-button
+              size="mini"
+              style="background: linear-gradient(#2575ec, #2250ba);"
+              @click="handlerDuanxin(dataObj.bjdh)"
+            >补发报警短信</el-button>
           </div>
         </div>
       </div>
@@ -261,6 +265,7 @@
  * 今日警情-派遣力量-灾害列表
  *          ----张磊 2020.04.15
  */
+import * as api from "../../../api/api";
 export default {
   name: "ZHLB",
   props: {
@@ -333,7 +338,9 @@ export default {
       five: false
     };
   },
-  created() {},
+  created() {
+    console.log(this.data);
+  },
   methods: {
     //控制显示于隐藏
     handlerC() {
@@ -407,6 +414,21 @@ export default {
         this.arr.push(index);
         this.checkList.push(item);
       }
+    },
+    //补发报警短信
+    handlerDuanxin(sjh) {
+      api
+        .callAlarmSms({
+          sjh: sjh
+        })
+        .then(res => {
+          console.log(res)
+          if (res.data.code === 200)
+            this.$message({
+              message: "发送成功",
+              type: "success"
+            });
+        });
     }
   }
 };

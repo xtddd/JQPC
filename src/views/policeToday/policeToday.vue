@@ -80,10 +80,10 @@
             灾害研判
           </div>-->
           <div class="jqlb">
-            <!-- <template v-for="(item,index) in list">
+            <template v-for="(item,index) in list">
               <ZHLB :data="item" :key="index+'zh'" :func="handlerDouble"></ZHLB>
-            </template>-->
-            <ZHLB :func="handlerDouble"></ZHLB>
+            </template>
+            <!-- <ZHLB :func="handlerDouble"></ZHLB> -->
           </div>
         </div>
       </div>
@@ -106,7 +106,7 @@
             </template>
           </div>
           <div class="contents">
-            <dispatch-power v-if="item === '力量派遣'" :list="PX"></dispatch-power>
+            <dispatch-power v-if="item === '力量派遣'" :list="PX" :carList="carList"></dispatch-power>
             <police-details v-if="item === '详情总览'"></police-details>
             <CJCS v-if="item === '处置措施'" :flag="token"></CJCS>
             <ZZZH v-if="item === '组织指挥'"></ZZZH>
@@ -151,7 +151,7 @@ export default {
         "处置措施",
         "组织指挥",
         "联战联勤",
-        "信息报送",
+        "信息报送"
         // "预知预警"
       ],
       flag: 1,
@@ -169,8 +169,9 @@ export default {
         backgroundSize: "100% 100%"
       },
       bgc: {},
-      token:'',
-      PX: null //派遣力量
+      token: "",
+      PX: [], //派遣力量
+      carList: []
     };
   },
   computed: {},
@@ -184,7 +185,7 @@ export default {
     //初始化
     init() {
       this.getList();
-      this.getToken()
+      this.getToken();
       console.log("policeToday.init...");
     },
     //获取列表数据
@@ -199,10 +200,21 @@ export default {
           console.log(this.list);
         });
     },
+    //获取车辆
+    getCar() {
+      return api
+        .findCarByJgid({
+          jgid: "10033a1bbb6045adb72f256d63b294b3"
+        })
+        .then(res => {
+          // this.carList = res.data.data;
+          return Promise.resolve(res.data.data);
+        });
+    },
     //获取token
-    getToken(){
+    getToken() {
       return api.InitLogin().then(res => {
-        this.token=res.data.data;
+        this.token = res.data.data;
       });
     },
     SelectionItem(item, index) {
@@ -210,18 +222,28 @@ export default {
       this.item = item;
     },
     //双击事件
-    handlerDouble() {
-      // alert(data);
+    handlerDouble(data) {
       //派遣力量
-      // this.PX = data.dispatchDataList;
-      let form = {
-        to: "map",
-        data: {
-          x: 118.797499,
-          y: 32.087104
-        }
-      };
-      window.bound.SendToC(JSON.stringify(form));
+      this.PX = data.dispatchDataList;
+      // this.getCar();
+      // let form = {
+      //   to: "map",
+      //   data: {
+      //     x: 118.797499,
+      //     y: 32.087104
+      //   }
+      // };
+      // window.bound.SendToC(JSON.stringify(form));
+      this.getCar().then(res => {
+        let list = JSON.parse(JSON.stringify(this.PX));
+        // list = list.concat(this.PX);
+        this.carList = list.map(item => {
+          item.dispatchCarList = res;
+          return item;
+        });
+        // this.$set("this", "carList", list);
+      });
+      console.log(this.carList);
       console.log(this.PX, "10101");
     }
   }

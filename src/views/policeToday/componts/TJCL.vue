@@ -1,55 +1,43 @@
 <template>
-  <div class="dispatchPowerCentent">
+  <div class="TJCL">
     <div class="btop">
       <mark>|</mark>
       {{title}}
     </div>
     <template v-for="(item,index) in list">
-      <div class="nr" :key="item.dpid">
+      <div class="nr" :key="item.dpid+index">
         <div class="top" style="display:flex;padding:15px 26px;background:#1A4E91">
           <div style="flex:1;text-align:center;font-size:18px">
             {{item.fsjgmc}}
-            <i
-              v-if="show"
-              class="shoIcon iconfont icon-sanx-up"
-              @click="handlerC(index)"
-            ></i>
+            <i v-if="show" class="shoIcon iconfont icon-sanx-up" @click="handlerC"></i>
             <i v-if="!show" class="shoIcon iconfont icon-arrUp-fill" @click="handlerC"></i>
           </div>
           <el-checkbox
-            v-if="isCheck"
             :indeterminate="isIndeterminate"
             v-model="checkAll"
             @change="handleCheckAllChange"
           ></el-checkbox>
-          <!-- <div style="margin: 15px 0;"></div> -->
         </div>
-        <div v-if="show">
+        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
           <template v-for="(items,index) in item.dispatchCarList">
-            <div
+            <el-checkbox
+              :label="items"
+              :true-label="item.cjh"
               :key="items.id+index"
-              :class="['PQitem',index === active ? 'active' : '']"
-              @click="hadlerB(index,0)"
+              @change="handleCheckChange"
             >
-              <span @click="hadlerB(index,1)">
-                <i class="carIcon iconfont icon-Group24Copy2"></i>
-                {{items.clmc}}
-              </span>
-              <span @click="hadlerB(index,2)">
-                <i class="carIcon iconfont icon-dianhua"></i>125323
-              </span>
-              <span @click="hadlerB(index,3)" v-if="!isCheck">
-                <i class="carIcon iconfont icon-shipin"></i>现场视频
-              </span>
-              <el-checkbox
-                v-model="items.clbh"
-                :true-label="items.id"
-                @change="handleCheckChange"
-                v-if="isCheck"
-              ></el-checkbox>
-            </div>
+              <div class="PQitem" @click="hadlerB(index,0)">
+                <span @click="hadlerB(index,1)">
+                  <i class="carIcon iconfont icon-Group24Copy2"></i>
+                  {{items.clmc}}
+                </span>
+                <span @click="hadlerB(index,2)">
+                  <i class="carIcon iconfont icon-dianhua"></i>125323
+                </span>
+              </div>
+            </el-checkbox>
           </template>
-        </div>
+        </el-checkbox-group>
       </div>
     </template>
     <div v-if="list && !list.length" style="text-align:center">暂无数据</div>
@@ -58,11 +46,11 @@
 
 <script>
 /**
- * 今日警情-派遣力量-消防站
- *          ----张磊 2020.04.15
+ * 今日警情-派遣力量-推荐车辆
+ *          ----张磊 2020.04.25
  */
 export default {
-  name: "dispatchPowerCentent",
+  name: "TJCL",
   props: {
     value: Boolean,
     isCheck: {
@@ -88,7 +76,8 @@ export default {
       active: "",
       checkAll: true,
       isIndeterminate: false,
-      currentValue: this.value
+      currentValue: this.value,
+      checkedCities: []
     };
   },
   watch: {
@@ -108,31 +97,32 @@ export default {
       this.active = index;
       if (type === 0) {
         this.currentValue = true;
-      } else if (type === 3) {
-        let form = {
-          to: "monitor",
-          data: {
-            puid:"123456"
-          }
-        };
-        alert(form);
-        window.bound.SendToC(JSON.stringify(form));
       }
       console.log(type);
     },
     //全选
-    handleCheckAllChange(val) {
+    handleCheckChange(val) {
+      // this.currentValue = true;
       console.log(val);
     },
-    handleCheckChange(val) {
+    handleCheckAllChange(val) {
       console.log(val);
+      // this.checkedCities = val ? cityOptions : [];
+      this.isIndeterminate = false;
+    },
+    handleCheckedCitiesChange(value) {
+      // let checkedCount = value.length;
+      // this.checkAll = checkedCount === this.cities.length;
+      // this.isIndeterminate =
+      //   checkedCount > 0 && checkedCount < this.cities.length;
+      console.log(value);
     }
   }
 };
 </script>
 
 <style lang="scss">
-.dispatchPowerCentent {
+.TJCL {
   width: 100%;
   .top {
     align-items: center;
@@ -157,12 +147,34 @@ export default {
     font-size: 16px;
     margin-right: 5px;
   }
+  .el-checkbox-group {
+    .el-checkbox {
+      width: 100%;
+      background-color: #2250ba;
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      padding: 0 10px;
+      box-sizing: border-box;
+    }
+    .is-checked {
+      background-color: #2575ec;
+    }
+    .el-checkbox__label {
+      flex: 1;
+    }
+    .el-checkbox__input.is-checked + .el-checkbox__label {
+      color: #ffffff;
+    }
+  }
   .PQitem {
-    background-color: #2250ba;
+    // background-color: #2250ba;
     padding: 13px;
     font-size: 16px;
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
     align-items: center;
   }
   .active {

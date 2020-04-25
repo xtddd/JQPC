@@ -15,11 +15,13 @@ function getServerConfig() {
   return new Promise((resolve, reject) => {
     axios.get('./serverConfig.json').then((result) => {
       console.log(result)  // 看打印出来的结果
-      // let config = result.data;
+      let config = result.data;
       // for (let key in result) {
-      //   axios.defaults.baseURL = config.baseURL;
+        Vue.prototype.baseURL = config.baseURL;
+        // axios.defaults.baseURL = config.baseURL;
       // }
-      console.log(axios.defaults.baseURL,'00000')  // 验证是否已经把属性挂在了Vue上
+      // console.log(axios.defaults.baseURL,'axios.defaults.baseURL00000')  // 验证是否已经把属性挂在了Vue上
+      console.log(Vue.prototype.baseURL,'Vue.prototype.baseURL00000')
       resolve();
     }).catch((error) => {
       console.log(error);

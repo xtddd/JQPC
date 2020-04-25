@@ -6,7 +6,7 @@
         <div class="leftMian">
           <h2 style="padding:0 0 0 20px;color:#E1181A;margin:10px 0;fontSiae:24px">推荐派遣：3中队12车72人</h2>
           <div class="LIlist">
-            <v-centent title="基层消防救援站" isCheck></v-centent>
+            <TJCL v-model="isShow" title="基层消防救援站" :list="carList"></TJCL>
           </div>
           <div class="button">
             <el-button>忽略建议</el-button>
@@ -16,7 +16,7 @@
         <div class="leftMian">
           <h2 style="padding:0 0 0 20px;margin:10px 0;fontSiae:24px">已调派：3中队12车72人</h2>
           <div class="LIlist">
-            <v-centent title="基层消防救援站"></v-centent>
+            <v-centent v-model="isShow" title="基层消防救援站" :list="list"></v-centent>
           </div>
         </div>
       </div>
@@ -26,9 +26,9 @@
           <el-button size="mini">增援力量</el-button>
         </div>
         <div class="LIlist" style="border:2px #2B8FFF solid">
-          <DNCY title="队内成员"></DNCY>
-          <SZZT title="上装状态"></SZZT>
-          <CLZB title="车辆装备"></CLZB>
+          <DNCY title="队内成员" v-if="isShow"></DNCY>
+          <SZZT title="上装状态" v-if="isShow"></SZZT>
+          <CLZB title="车辆装备" v-if="isShow"></CLZB>
         </div>
       </div>
       <div :class="{'youhua':centerDialogVisible}" @click="shouhui"></div>
@@ -49,6 +49,7 @@ import DNCY from "./DNCY";
 import CLZB from "./CLZB";
 import SZZT from "./SZZT";
 import YJDP from "./YJDP";
+import TJCL from "./TJCL";
 export default {
   name: "dispatchPower",
   components: {
@@ -56,10 +57,15 @@ export default {
     DNCY,
     CLZB,
     SZZT,
-    YJDP
+    YJDP,
+    TJCL
   },
   props: {
     list: {
+      type: Array,
+      default: () => []
+    },
+    carList: {
       type: Array,
       default: () => []
     }
@@ -67,6 +73,7 @@ export default {
   data() {
     return {
       form: {},
+      isShow: false,
       centerDialogVisible: false
     };
   },
